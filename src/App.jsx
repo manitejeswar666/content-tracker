@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { stages, initialItems } from './items'
 
 function App() {
-  const [items, setItems] = useState(initialItems)
+  const [items, setItems] = useState(() => {
+  const saved = localStorage.getItem('content-tracker-items')
+  return saved ? JSON.parse(saved) : initialItems
+})
+useEffect(() => {
+  localStorage.setItem('content-tracker-items', JSON.stringify(items))
+}, [items])
   const [title, setTitle] = useState('')
   const [platform, setPlatform] = useState('YouTube')
   const [editingId, setEditingId] = useState(null)
